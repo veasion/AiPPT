@@ -161,31 +161,31 @@
     </style>
 </head>
 <body>
-<a href="https://docmee.cn" target="_blank" class="docmee" title="进入文多多AiPPT官网">文多多 AiPPT</a>
-<!-- 大纲生成 -->
+<a href="https://docmee.cn" target="_blank" class="docmee" title="Enter DocMee AiPPT official website">DocMee AiPPT</a>
+<!-- Outline Generation -->
 <div id="div1">
     <div style="margin-bottom: 50px;">
-        <h1>🤖 AI智能生成PPT演示文稿</h1>
-        <div style="font-size: 14px;color: #999;">生成大纲 ---&gt; 挑选模板 ---&gt; 实时生成PPT</div>
+        <h1>🤖 AI-powered PPT Slide Generation</h1>
+        <div style="font-size: 14px;color: #999;">Generate Outline ---&gt; Select Template ---&gt; Generate PPT in Real-time</div>
     </div>
-    <label>主题：</label>
-    <input type="text" id="subject" placeholder="请输入PPT主题" maxlength="20" />
-    <button onclick="generateOutline()">生成大纲</button>
-    <button id="nextTo2" class="next_but" onclick="nextTo2()">下一步：选择模板</button>
+    <label>Theme:</label>
+    <input type="text" id="subject" placeholder="Enter PPT theme" maxlength="20" />
+    <button onclick="generateOutline()">Generate Outline</button>
+    <button id="nextTo2" class="next_but" onclick="nextTo2()">Next: Select Template</button>
     <div id="outline"></div>
 </div>
-<!-- 选择模板 -->
+<!-- Select Template -->
 <div id="div2">
     <div style="text-align: center;margin: 10px;">
-        <div>---- 选择模板 ----</div>
-        <button id="nextTo3" class="next_but" style="margin-top: 10px;" onclick="nextTo3()">下一步：生成PPT</button>
+        <div>---- Select Template ----</div>
+        <button id="nextTo3" class="next_but" style="margin-top: 10px;" onclick="nextTo3()">Next: Generate PPT</button>
     </div>
-    <div id="templates">模板加载中...</div>
+    <div id="templates">Loading templates...</div>
 </div>
-<!-- PPT页面 -->
+<!-- PPT Page -->
 <div id="div3">
     <div id="desc" style="text-align: center;margin-top: 20px">
-        <span id="desc_msg">正在生成中，请稍后...</span>
+        <span id="desc_msg">Generating, please wait...</span>
         <span id="desc_time" style="margin-left: 5px"></span>
     </div>
     <div class="left_div">
@@ -202,25 +202,25 @@
     </div>
     <div class="right_div">
         <select id="insert_element" style="display: none;margin-left: 10px" onchange="insertElement(this.value.split(',')[0], this.value.split(',')[1])">
-            <option value="">-- 插入元素 --</option>
-            <option value="text,title1">插入大标题</option>
-            <option value="text,title2">插入副标题</option>
-            <option value="text,content">插入正文文本</option>
-            <option value="image">插入图片</option>
-            <option value="geometry">插入随机形状</option>
-            <option value="table">插入表格</option>
-            <option value="chart,bar">插入柱状图</option>
-            <option value="chart,pie">插入饼图</option>
-            <option value="chart,doughnut">插入环形图</option>
-            <option value="chart,line">插入折线图</option>
+            <option value="">-- Insert Element --</option>
+            <option value="text,title1">Insert Title</option>
+            <option value="text,title2">Insert Subtitle</option>
+            <option value="text,content">Insert Body Text</option>
+            <option value="image">Insert Image</option>
+            <option value="geometry">Insert Random Shape</option>
+            <option value="table">Insert Table</option>
+            <option value="chart,bar">Insert Bar Chart</option>
+            <option value="chart,pie">Insert Pie Chart</option>
+            <option value="chart,doughnut">Insert Doughnut Chart</option>
+            <option value="chart,line">Insert Line Chart</option>
         </select>
         <div id="pptDownload">
             <select id="download_select" style="margin-right: 5px">
-                <option value="">-- 下载选项 --</option>
-                <option value="0">不添加动画</option>
-                <option value="1">智能添加动画</option>
+                <option value="">-- Download Options --</option>
+                <option value="0">No Animation</option>
+                <option value="1">Smart Animation</option>
             </select>
-            <a id="downloadPptx" href="javascript:downloadPptx()">渲染pptx并下载</a>
+            <a id="downloadPptx" href="javascript:downloadPptx()">Render and Download PPTX</a>
         </div>
         <div id="right_container" style="padding-top: 8px;">
             <!--<canvas id="right_canvas" width="1920" height="1080" style="width: 960px;height: 540px;"></canvas>-->
@@ -240,9 +240,9 @@
 <script src="static/marked.js"></script>
 <script>
 
-    // 文多多AiPPT
-    // 官网 https://docmee.cn
-    // 开放平台 https://docmee.cn/open-platform
+    // DocMee AiPPT
+    // Official website https://docmee.cn
+    // Open platform https://docmee.cn/open-platform
     
     const apiKey = '4u2Fo50Alk1ym2Os'
     var pptxId = null
@@ -256,12 +256,12 @@
     var markdownRenderer = new marked.Renderer()
     marked.setOptions({
         renderer: markdownRenderer,
-        async: false, // 是否异步渲染
-        gfm: true, // 运行github标准的markdown
-        tables: true, // 表格
-        breaks: false, // 回车换行
-        pedantic: false, // 兼容隐晦部分
-        silent: true // 错误时不抛异常
+        async: false, // Whether to render asynchronously
+        gfm: true, // Run github standard markdown
+        tables: true, // tables
+        breaks: false, // line breaks
+        pedantic: false, // Compatible with obscure parts
+        silent: true // Do not throw exceptions on errors
     })
 
     // canvas
@@ -276,15 +276,15 @@
     function generateOutline() {
         let subject = document.getElementById('subject').value
         if (!subject) {
-            alert('请输入主题')
+            alert('Please enter a theme')
             return
         }
         if (subject.length <= 1) {
-            alert('主题太短')
+            alert('Theme is too short')
             return
         }
         if (subject.length > 30) {
-            alert('主题太长，不能超过30字')
+            alert('Theme is too long, cannot exceed 30 characters')
             return
         }
         if (gening) {
@@ -306,7 +306,7 @@
             let json = JSON.parse(data.data)
             if (json.status == -1) {
                 gening = false
-                alert('生成大纲异常：' + json.error)
+                alert('Error generating outline: ' + json.error)
                 return
             }
             outline += json.text
@@ -318,7 +318,7 @@
             if (data.data.startsWith('{') && data.data.endsWith('}')) {
                 const json = JSON.parse(data.data)
                 if (json.code != 0) {
-                    alert('生成大纲异常：' + json.message)
+                    alert('Error generating outline: ' + json.message)
                     return
                 }
             }
@@ -327,8 +327,8 @@
         }
         source.onerror = function (err) {
             gening = false
-            console.error('生成大纲异常', err)
-            alert('生成大纲异常')
+            console.error('Error generating outline', err)
+            alert('Error generating outline')
         }
         source.stream()
     }
@@ -359,7 +359,7 @@
                         html += '</div>'
                         templates += html
                     }
-                    templates += '<div style="width: 100%;padding: 10px;text-align: center;"><button onclick="loadTemplates()">换一批</button></div>'
+                    templates += '<div style="width: 100%;padding: 10px;text-align: center;"><button onclick="loadTemplates()">Load More</button></div>'
                     document.getElementById('templates').innerHTML = templates
                     selectTemplate(list[0].id)
                 }
@@ -394,7 +394,7 @@
         var timer = setInterval(() => {
             count = count + 1
             document.getElementById('desc').style.display = 'block'
-            document.getElementById('desc_time').innerHTML = count + '秒'
+            document.getElementById('desc_time').innerHTML = count + 's'
         }, 1000)
         const url = 'https://docmee.cn/api/public/ppt/generateContent?apiKey=' + apiKey
         var source = new SSE(url, {
@@ -409,11 +409,11 @@
         source.onmessage = function (data) {
             let json = JSON.parse(data.data)
             if (json.status == -1) {
-                alert('生成PPT异常：' + json.error)
+                alert('Error generating PPT: ' + json.error)
                 return
             }
             if (json.pptId) {
-                document.getElementById('desc_msg').innerText = `正在生成中，进度 ${json.current}/${json.total}，请稍后...`
+                document.getElementById('desc_msg').innerText = `Generating, progress ${json.current}/${json.total}, please wait...`
                 asyncGenPptxInfo(json.pptId)
             }
         }
@@ -421,7 +421,7 @@
             if (data.data.startsWith('{') && data.data.endsWith('}')) {
                 const json = JSON.parse(data.data)
                 if (json.code != 0) {
-                    alert('生成PPT异常：' + json.message)
+                    alert('Error generating PPT: ' + json.message)
                     return
                 }
             }
@@ -433,8 +433,8 @@
         }
         source.onerror = function (err) {
             clearInterval(timer)
-            console.error('生成内容异常', err)
-            alert('生成内容异常')
+            console.error('Error generating content', err)
+            alert('Error generating content')
         }
         source.stream()
     }
@@ -476,7 +476,7 @@
             if (asyncGen && idx < pptxObj.pages.length - 1) {
                 html += '<div class="left_div_item">'
                 html += '<div class="left_div_item_index">' + (idx + 2) + '</div>'
-                html += '<div style="width: 144px;height: 81px;text-align: center;line-height: 81px;color: #666;cursor: default;" class="left_div_item_img">生成中...</div>'
+                html += '<div style="width: 144px;height: 81px;text-align: center;line-height: 81px;color: #666;cursor: default;" class="left_div_item_img">Generating...</div>'
                 html += '</div>'
             }
             let itemList = document.getElementById('left_image_list')
@@ -493,7 +493,7 @@
                     let _ppt2Canvas = new Ppt2Canvas(imgCanvas)
                     await _ppt2Canvas.drawPptx(pptxObj, i)
                 } catch(e) {
-                    console.log('渲染第' + (i + 1) + '页封面异常', e)
+                    console.log('Error rendering cover for page ' + (i + 1), e)
                 }
             }
         } else if (idx != null) {
@@ -502,7 +502,7 @@
                 let _ppt2Canvas = new Ppt2Canvas(imgCanvas)
                 await _ppt2Canvas.drawPptx(pptxObj, idx)
             } catch(e) {
-                console.log('渲染第' + (idx + 1) + '页封面异常', e)
+                console.log('Error rendering cover for page ' + (idx + 1), e)
             }
         }
 
@@ -522,11 +522,11 @@
     }
     function downloadPptx() {
         let download = document.getElementById('downloadPptx')
-        // 渲染pptx并下载
-        if (download.innerText.indexOf('下载') == -1) {
+        // Render and download pptx
+        if (download.innerText.indexOf('Download') == -1) {
             return
         }
-        download.innerText = '正在渲染中...'
+        download.innerText = 'Rendering...'
         let animationType = document.getElementById('download_select').value
         if (animationType != '1' && animationType != '2') {
             animationType = null
@@ -537,13 +537,13 @@
         xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.onload = function() {
             if (this.status == 200) {
-                download.innerText = '渲染pptx并下载'
+                download.innerText = 'Render and Download PPTX'
                 let blob = this.response
                 if (blob.type == 'application/json') {
                     const reader = new FileReader()
                     reader.onload = function(e) {
                         let json = JSON.parse(e.target.result)
-                        alert('下载失败：' + json.message)
+                        alert('Download failed: ' + json.message)
                     }
                     reader.readAsText(blob)
                     return
@@ -561,7 +561,7 @@
         }
         xhr.onerror = function (e) {
             console.error(e)
-            download.innerText = '渲染pptx并下载'
+            download.innerText = 'Render and Download PPTX'
         }
         xhr.send(JSON.stringify(pptxObj))
     }
@@ -667,18 +667,18 @@
             }
             element = createGeometry(geometryName)
         } else if (type == 'table') {
-            // 表格
-            let rowColumnDataList = [['第1行1列', '第1行2列', '第1行3列'], ['第2行1列', '第2行2列', '第2行3列'], ['第3行1列', '第3行2列', '第3行3列']]
+            // Table
+            let rowColumnDataList = [['Row 1 Col 1', 'Row 1 Col 2', 'Row 1 Col 3'], ['Row 2 Col 1', 'Row 2 Col 2', 'Row 2 Col 3'], ['Row 3 Col 1', 'Row 3 Col 2', 'Row 3 Col 3']]
             element = createTable(rowColumnDataList)
         } else if (type == 'chart') {
-            // 图表
+            // Chart
             let rowColumnDataList = []
             if (subType == 'pie' || subType == 'doughnut') {
-                rowColumnDataList = [[' ','销售额'], ['第一季度','8.2'], ['第二季度','3.2'], ['第三季度','1.4'], ['第四季度','1.2']]
+                rowColumnDataList = [[' ', 'Sales'], ['Q1', '8.2'], ['Q2', '3.2'], ['Q3', '1.4'], ['Q4', '1.2']]
             } else {
-                rowColumnDataList = [[' ','系列 1','系列 2','系列 3'], ['类别 1','4.3','2.4','2'], ['类别 2','2.5','4.4','2'], ['类别 3','3.5','1.8','3'], ['类别 4','4.5','2.8','5']]
+                rowColumnDataList = [[' ', 'Series 1', 'Series 2', 'Series 3'], ['Category 1', '4.3', '2.4', '2'], ['Category 2', '2.5', '4.4', '2'], ['Category 3', '3.5', '1.8', '3'], ['Category 4', '4.5', '2.8', '5']]
             }
-            element = createChart('图表标题', subType, rowColumnDataList)
+            element = createChart('Chart Title', subType, rowColumnDataList)
         }
         if (element) {
             pptxObj.pages[selectIdx].children.push(element)

@@ -64,30 +64,30 @@
     </style>
 </head>
 <body style="margin: 20px">
-    <a href="https://docmee.cn" target="_blank" class="docmee" title="进入文多多AiPPT官网">文多多 AiPPT</a>
+    <a href="https://docmee.cn" target="_blank" class="docmee" title="Enter DocMee AiPPT official website">DocMee AiPPT</a>
     <div style="margin-top: 50px;">
         <input id="file" type="file" accept="application/vnd.openxmlformats-officedocument.presentationml.presentation, application/json" onclick="document.getElementById('file').value = ''" onchange="ppt2json()" />
-        <span id="refresh_json" style="color: #999;cursor: pointer;margin-right: 15px;" title="刷新JSON数据" onclick="refreshJson()">刷新</span>
-        <!-- <span id="download_json" style="color: #317ef3;display: none;cursor: pointer;margin-right: 15px;" title="下载json数据" onclick="downloadJson()">下载json文件</span> -->
-        <span id="download_pptx" style="color: #317ef3;display: none;cursor: pointer;" title="渲染pptx并下载" onclick="json2ppt()">渲染pptx并下载</span>
+        <span id="refresh_json" style="color: #999;cursor: pointer;margin-right: 15px;" title="Refresh JSON data" onclick="refreshJson()">Refresh</span>
+        <!-- <span id="download_json" style="color: #317ef3;display: none;cursor: pointer;margin-right: 15px;" title="Download json data" onclick="downloadJson()">Download json file</span> -->
+        <span id="download_pptx" style="color: #317ef3;display: none;cursor: pointer;" title="Render and download pptx" onclick="json2ppt()">Render and download pptx</span>
     </div>
     <div id="json" style="margin-top: 20px"></div>
     <div>
         <ul id="pageList"></ul>
-        <span>编辑模式：</span>
+        <span>Edit Mode:</span>
         <input id="mode_checkbox" type="checkbox" checked onchange="changeMode()" />
         <select id="insert_element" style="display: none;margin-left: 10px" onchange="insertElement(this.value.split(',')[0], this.value.split(',')[1])">
-            <option value="">-- 插入元素 --</option>
-            <option value="text,title1">插入大标题</option>
-            <option value="text,title2">插入副标题</option>
-            <option value="text,content">插入正文文本</option>
-            <option value="image">插入图片</option>
-            <option value="geometry">插入随机形状</option>
-            <option value="table">插入表格</option>
-            <option value="chart,bar">插入柱状图</option>
-            <option value="chart,pie">插入饼图</option>
-            <option value="chart,doughnut">插入环形图</option>
-            <option value="chart,line">插入折线图</option>
+            <option value="">-- Insert Element --</option>
+            <option value="text,title1">Insert Title</option>
+            <option value="text,title2">Insert Subtitle</option>
+            <option value="text,content">Insert Body Text</option>
+            <option value="image">Insert Image</option>
+            <option value="geometry">Insert Random Shape</option>
+            <option value="table">Insert Table</option>
+            <option value="chart,bar">Insert Bar Chart</option>
+            <option value="chart,pie">Insert Pie Chart</option>
+            <option value="chart,doughnut">Insert Doughnut Chart</option>
+            <option value="chart,line">Insert Line Chart</option>
         </select>
     </div>
     <div id="container" style="margin-top: 10px;">
@@ -109,7 +109,7 @@
 
     function ppt2json() {
 	if (true) {
-	  alert('功能暂时关闭，请使用文多多AiPPT开放平台: https://docmee.cn/open-platform');
+	  alert('This feature is temporarily disabled. Please use the DocMee AiPPT Open Platform: https://docmee.cn/open-platform');
 	  return;
 	}
         let file = document.getElementById('file').files[0]
@@ -122,13 +122,13 @@
                 drawPageList(pptxObj)
             }
             reader.onerror = function(e) {
-                editor.set({ message: '读取错误: ' + e.target.error })
+                editor.set({ message: 'Read error: ' + e.target.error })
             }
             reader.readAsText(file)
             return
         }
         if (file.size > 1048576 * 50) {
-          alert('文件不能超过50M')
+          alert('File cannot exceed 50M')
           return
         }
         if (file) {
@@ -136,11 +136,11 @@
             formData.append('file', file)
             let xhr = new XMLHttpRequest()
             xhr.open('POST', 'https://docmee.cn/api/public/ppt/ppt2json?apiKey=' + apiKey)
-            editor.set({ message: '解析中，请稍后...' })
+            editor.set({ message: 'Parsing, please wait...' })
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        // 解析
+                        // Parse
                         let pptxObj = JSON.parse(xhr.responseText)
                         if (pptxObj.code == -1 && pptxObj.message) {
                             alert(pptxObj.message)
@@ -155,7 +155,7 @@
             }
             xhr.send(formData)
         } else {
-            editor.set({ message: '请选择文件' })
+            editor.set({ message: 'Please select a file' })
         }
     }
 
@@ -163,24 +163,24 @@
         if (!pptxObj) {
             return
         }
-        // 渲染pptx并下载
-        if (download_pptx.innerText.indexOf('下载') == -1) {
+        // Render and download pptx
+        if (download_pptx.innerText.indexOf('download') == -1) {
             return
         }
-        download_pptx.innerText = '正在渲染中...'
+        download_pptx.innerText = 'Rendering...'
         let xhr = new XMLHttpRequest()
         xhr.responseType = 'blob'
         xhr.open('POST', 'https://docmee.cn/api/public/ppt/json2ppt?apiKey=' + apiKey)
         xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.onload = function() {
             if (this.status == 200) {
-                download_pptx.innerText = '渲染pptx并下载'
+                download_pptx.innerText = 'Render and download pptx'
                 let blob = this.response
                 if (blob.type == 'application/json') {
                     const reader = new FileReader()
                     reader.onload = function(e) {
                         let json = JSON.parse(e.target.result)
-                        alert('下载失败：' + json.message)
+                        alert('Download failed: ' + json.message)
                     }
                     reader.readAsText(blob)
                     return
@@ -264,10 +264,10 @@
     function insertElement(type, subType) {
         let element = null
         if (type == 'text') {
-            // 文本
+            // Text
            element = createTextBox(subType)
         } else if (type == 'image') {
-            // 图片
+            // Image
             let input = document.createElement('input')
             input.type = 'file'
             input.accept = '.jpg,.png'
@@ -291,28 +291,28 @@
             }
             input.click()
         } else if (type == 'geometry') {
-            // 形状
+            // Shape
             let geometryName = subType
             if (!geometryName) {
-                // 随机形状
+                // Random shape
                 let keys = Object.keys(geometryMap)
                 geometryName = keys[Math.floor(Math.random() * keys.length)]
                 console.log('geometry', geometryName)
             }
             element = createGeometry(geometryName)
         } else if (type == 'table') {
-            // 表格
-            let rowColumnDataList = [['第1行1列', '第1行2列', '第1行3列'], ['第2行1列', '第2行2列', '第2行3列'], ['第3行1列', '第3行2列', '第3行3列']]
+            // Table
+            let rowColumnDataList = [['Row 1 Col 1', 'Row 1 Col 2', 'Row 1 Col 3'], ['Row 2 Col 1', 'Row 2 Col 2', 'Row 2 Col 3'], ['Row 3 Col 1', 'Row 3 Col 2', 'Row 3 Col 3']]
             element = createTable(rowColumnDataList)
         } else if (type == 'chart') {
-            // 图表
+            // Chart
             let rowColumnDataList = []
             if (subType == 'pie' || subType == 'doughnut') {
-                rowColumnDataList = [[' ','销售额'], ['第一季度','8.2'], ['第二季度','3.2'], ['第三季度','1.4'], ['第四季度','1.2']]
+                rowColumnDataList = [[' ', 'Sales'], ['Q1', '8.2'], ['Q2', '3.2'], ['Q3', '1.4'], ['Q4', '1.2']]
             } else {
-                rowColumnDataList = [[' ','系列 1','系列 2','系列 3'], ['类别 1','4.3','2.4','2'], ['类别 2','2.5','4.4','2'], ['类别 3','3.5','1.8','3'], ['类别 4','4.5','2.8','5']]
+                rowColumnDataList = [[' ', 'Series 1', 'Series 2', 'Series 3'], ['Category 1', '4.3', '2.4', '2'], ['Category 2', '2.5', '4.4', '2'], ['Category 3', '3.5', '1.8', '3'], ['Category 4', '4.5', '2.8', '5']]
             }
-            element = createChart('图表标题', subType, rowColumnDataList)
+            element = createChart('Chart Title', subType, rowColumnDataList)
         }
         if (element) {
             pptxObj.pages[selectIdx].children.push(element)
